@@ -1,4 +1,4 @@
-import LCD
+import LcDisplay
 import Sensor
 import GetInfo
 
@@ -7,6 +7,6 @@ Temperature = Sensor.Temperature
 Humidity = Sensor.Humidity
 Light = Sensor.Light
 # the lcd as a class
-LcDisplay = LCD.LcDisplay
+LcDisplay = LcDisplay.LcDisplay
 # the getting information funtion as a class
 GetInfo = GetInfo.GetInfo
