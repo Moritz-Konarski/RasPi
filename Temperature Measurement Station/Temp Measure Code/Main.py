@@ -1,4 +1,4 @@
-from LcDisplay import lcd as lcd
+# from LcDisplay import lcd as lcd
 from Sensor import Temperature as Temp, Humidity as Hum, Light as Light
 import GetInfo
 
@@ -25,10 +25,10 @@ import GetInfo
 
 Info = GetInfo.InputOutput
 
-lcd = lcd()
+# lcd = lcd()
 temp_obj = Temp([12, 23, 17, 26, 5])
 hum_obj = Hum([22, 13, 8, 6, 9])
-light_obj = Light([3, 1, 4])
+light_obj = Light([3, 1, 4, 5, 7, 8, 9, 12, 15])
 
 
 temp_obj.measure()
