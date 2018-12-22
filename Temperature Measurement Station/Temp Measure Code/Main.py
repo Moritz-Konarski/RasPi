@@ -1,6 +1,6 @@
 # from LcDisplay import lcd as lcd
 from Sensor import Temperature as Temp, Humidity as Hum, Light as Light
-import GetInfo
+from GetInfo import InputOutput
 
 # TODO use the path object to do the info thing
 # use class sensors and class arrays, do everything with parameters to make it better
@@ -23,25 +23,27 @@ import GetInfo
 # lcd.clear()
 # lcd.backlight
 
-Info = GetInfo.InputOutput
+inpoup = InputOutput()
+
+print(repr(inpoup.temp_pin_read()))
 
 # lcd = lcd()
-temp_obj = Temp([12, 23, 17, 26, 5])
-hum_obj = Hum([22, 13, 8, 6, 9])
-light_obj = Light([3, 1, 4, 5, 7, 8, 9, 12, 15])
+# temp_obj = Temp([12, 23, 17, 26, 5])
+# hum_obj = Hum([22, 13, 8, 6, 9])
+# light_obj = Light([3, 1, 4, 5, 7, 8, 9, 12, 15])
 
 
-temp_obj.measure()
-print(repr(temp_obj.pins))
-print(repr(temp_obj.name))
-print(repr(temp_obj.temp))
+# temp_obj.measure()
+# print(repr(temp_obj.pins))
+# print(repr(temp_obj.name))
+# print(repr(temp_obj.temp))
 
-hum_obj.measure()
-print(repr(hum_obj.pins))
-print(repr(hum_obj.name))
-print(repr(hum_obj.hum))
+# hum_obj.measure()
+# print(repr(hum_obj.pins))
+# print(repr(hum_obj.name))
+# print(repr(hum_obj.hum))
 
-light_obj.measure()
-print(repr(light_obj.pins))
-print(repr(light_obj.name))
-print(repr(light_obj.light))
+# light_obj.measure()
+# print(repr(light_obj.pins))
+# print(repr(light_obj.name))
+# print(repr(light_obj.light))
