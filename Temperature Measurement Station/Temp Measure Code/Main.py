@@ -1,6 +1,7 @@
 # from LcDisplay import lcd as lcd
-from Sensor import Temperature as Temp, Humidity as Hum, Light as Light
+from Sensor import Dht_22 as Dht_22, Light as Light
 from GetInfo import InputOutput
+from LED import LED
 
 # TODO use the path object to do the info thing
 # use class sensors and class arrays, do everything with parameters to make it better
@@ -22,28 +23,38 @@ from GetInfo import InputOutput
 # lcd.print_strings(string1, string2)
 # lcd.clear()
 # lcd.backlight
+in_and_out = InputOutput()
 
-inpoup = InputOutput()
+# led = LED(in_and_out.led_pin_read())
 
-print(repr(inpoup.temp_pin_read()))
+# print(repr(in_and_out.dht_pin_read()))
 
-# lcd = lcd()
-# temp_obj = Temp([12, 23, 17, 26, 5])
+# print(repr(in_and_out.light_pin_read()))
+
+# print(repr(in_and_out.name_txt_read()))
+
+# print(repr(in_and_out.title))
+
+# # lcd = lcd()
+# dht_obj = Dht_22(in_and_out.dht_pin_read())
+light_obj = Light(in_and_out.light_pin_read())
 # hum_obj = Hum([22, 13, 8, 6, 9])
 # light_obj = Light([3, 1, 4, 5, 7, 8, 9, 12, 15])
 
 
-# temp_obj.measure()
-# print(repr(temp_obj.pins))
-# print(repr(temp_obj.name))
-# print(repr(temp_obj.temp))
+# dht_obj.measure()
+# print(repr(dht_obj.pins))
+# print(repr(dht_obj.name_temp))
+# print(repr(dht_obj.name_hum))
+# print(repr(dht_obj.results))
 
 # hum_obj.measure()
 # print(repr(hum_obj.pins))
 # print(repr(hum_obj.name))
 # print(repr(hum_obj.hum))
 
-# light_obj.measure()
-# print(repr(light_obj.pins))
-# print(repr(light_obj.name))
-# print(repr(light_obj.light))
+light_obj.measure()
+print(repr(light_obj.pins))
+print(repr(light_obj.name))
+print(repr(light_obj.light_values))
+print(light_obj.light_values[2][1])     #can be accessed through [row][column] because it is an array
