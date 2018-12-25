@@ -1,6 +1,6 @@
 # from LcDisplay import lcd as lcd
 from Sensor import Dht_22 as Dht_22, Light as Light
-from GetInfo import InputOutput
+from InputOutput import InputOutput
 from LED import LED
 
 # TODO use the path object to do the info thing
@@ -55,6 +55,6 @@ light_obj = Light(in_and_out.light_pin_read())
 
 light_obj.measure()
 print(repr(light_obj.pins))
-print(repr(light_obj.name))
-print(repr(light_obj.light_values))
-print(light_obj.light_values[2][1])     #can be accessed through [row][column] because it is an array
+print(repr(light_obj.names))
+print(repr(light_obj.values))
+print(light_obj.values[2][1])     #can be accessed through [row][column] because it is an array

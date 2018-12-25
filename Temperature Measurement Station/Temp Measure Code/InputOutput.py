@@ -10,6 +10,14 @@ track_file = test_folder / "track.txt"
 
 log_file = test_folder / "log.txt"
 
+#TODO make this whole thing an array to make it shorter because it is literally five times the same code
+
+dht_signifier = "DHT22: "
+light_signifier = "Light: "
+name_signifier = "Name: "
+led_signifier = "LED: "
+title = "not_given"
+
 class InputOutput:
 
     # maybe initialze this with a real funtion
@@ -20,18 +28,13 @@ class InputOutput:
         self.name_file = name_file
         self.track_file = track_file
         self.log_file = log_file
-        self.dht_signifier = "DHT22: "
-        self.light_signifier = "Light: "
-        self.name_signifier = "Name: "
-        self.led_signifier = "LED: "
-        self.title = "not_given"
 
     def dht_pin_read(self):        
         with open(self.pin_file, "r") as file:
             while (True):
                 read = file.readline()
-                if read.startswith(self.dht_signifier):
-                    read = read.replace(self.dht_signifier, "")
+                if read.startswith(dht_signifier):
+                    read = read.replace(dht_signifier, "")
                     read = read.split(" ")
                     dht_pins = [int(number) for number in read]
                     return dht_pins
@@ -43,8 +46,8 @@ class InputOutput:
         with open(self.pin_file, "r") as file:
             while (True):
                 read = file.readline()
-                if read.startswith(self.light_signifier):
-                    read = read.replace(self.light_signifier, "")
+                if read.startswith(light_signifier):
+                    read = read.replace(light_signifier, "")
                     read = read.split(" ")
                     light_pins = [int(number) for number in read]
                     return light_pins
@@ -56,8 +59,8 @@ class InputOutput:
         with open(self.name_file, "r") as file:
             while (True):
                 read = file.readline()
-                if read.startswith(self.name_signifier):
-                    read = read.replace(self.name_signifier, "")
+                if read.startswith(name_signifier):
+                    read = read.replace(name_signifier, "")
                     self.title = read
                     return read
                 elif read is "":
@@ -68,8 +71,8 @@ class InputOutput:
         with open(self.name_file, "r") as file:
             while (True):
                 read = file.readline()
-                if read.startswith(self.led_signifier):
-                    read = read.replace(self.led_signifier, "")
+                if read.startswith(led_signifier):
+                    read = read.replace(led_signifier, "")
                     led_pin = int(read)
                     return led_pin
                 elif read is "":
@@ -82,5 +85,15 @@ class InputOutput:
     def track_txt_read(self):
         pass
 
-    def log_txt_write(self, string):
-        pass   
+    def log_txt_write(self, temp_hum_values=[][], light_values=[][]):
+
+        date_string = ""
+        temp_string = temp_string.append("{};".format(temp_hum_values[0][n]))
+        hum_string = ""
+        light_string = ""
+
+        total_string = (date_string + temp_string + hum_string + light_string + "\n")
+        with open(log_file, "a") as file:
+            file.write(total_string)
+
+           
