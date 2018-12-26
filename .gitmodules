@@ -1,3 +1,6 @@
 [submodule "Temperature"]
 	path = Temperature
 	url = https://github.com/adafruit/Adafruit_Python_DHT.git
+[submodule "Temperature Measurement Station/TMC/Adafruit_Python_DHT"]
+	path = Temperature Measurement Station/TMC/Adafruit_Python_DHT
+	url = https://github.com/adafruit/Adafruit_Python_DHT.git

@@ -31,14 +31,12 @@ def light_measure(pin):
 
 def dht_measure(pin):
     humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
-    temp = round(temperature * 10) / 10
-    hum = round(humidity * 10) / 10
-    return temp, hum
+    return temperature, humidity
 
 def dht_name(n):
-    temp = "Temp {}".format(n + 1)
-    hum = "Hum {}".format(n + 1)
-    return temp, hum
+    temp_name = "Temp {}".format(n + 1)
+    hum_name = "Hum {}".format(n + 1)
+    return temp_name, hum_name
 
 class Dht_22:
 

@@ -7,15 +7,15 @@ Folder in file struture:
 
 from pathlib import Path
 
-test_folder = Path("C:/Users/morit/Desktop/test_folder")
+info_path = Path("/home/pi/Desktop/Info")
 
-pin_file = test_folder / "pin_numbers.txt"
+pin_file = info_path / "pin_numbers.txt"
 
-name_file = test_folder / "name.txt"
+name_file = info_path / "name.txt"
 
-track_file = test_folder / "track.txt"
+track_file = info_path / "track.txt"
 
-log_file = test_folder / "log.txt"
+log_file = info_path / "log.txt"
 
 #TODO make this whole thing an array to make it shorter because it is literally five times the same code
 
@@ -92,15 +92,13 @@ class InputOutput:
     def track_txt_read(self):
         pass
 
-    def log_txt_write(self, temp_hum_values=[][], light_values=[][]):
+    # def log_txt_write(self, temp_hum_values=[][], light_values=[][]):
+    #     pass
+        # date_string = ""
+        # temp_string = temp_string.append("{};".format(temp_hum_values[0][n]))
+        # hum_string = ""
+        # light_string = ""
 
-        date_string = ""
-        temp_string = temp_string.append("{};".format(temp_hum_values[0][n]))
-        hum_string = ""
-        light_string = ""
-
-        total_string = (date_string + temp_string + hum_string + light_string + "\n")
-        with open(log_file, "a") as file:
-            file.write(total_string)
-
-           
+        # total_string = (date_string + temp_string + hum_string + light_string + "\n")
+        # with open(log_file, "a") as file:
+        #     file.write(total_string)
