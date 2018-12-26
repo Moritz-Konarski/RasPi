@@ -23,6 +23,7 @@ from LED import LED
 # lcd.print_strings(string1, string2)
 # lcd.clear()
 # lcd.backlight
+
 in_and_out = InputOutput()
 
 # led = LED(in_and_out.led_pin_read())
@@ -36,17 +37,17 @@ in_and_out = InputOutput()
 # print(repr(in_and_out.title))
 
 # # lcd = lcd()
-# dht_obj = Dht_22(in_and_out.dht_pin_read())
+dht_obj = Dht_22(in_and_out.dht_pin_read())
 light_obj = Light(in_and_out.light_pin_read())
 # hum_obj = Hum([22, 13, 8, 6, 9])
 # light_obj = Light([3, 1, 4, 5, 7, 8, 9, 12, 15])
 
 
-# dht_obj.measure()
-# print(repr(dht_obj.pins))
-# print(repr(dht_obj.name_temp))
-# print(repr(dht_obj.name_hum))
-# print(repr(dht_obj.results))
+dht_obj.measure()
+print(repr(dht_obj.pins))
+print(repr(dht_obj.name_temp))
+print(repr(dht_obj.name_hum))
+print(repr(dht_obj.results))
 
 # hum_obj.measure()
 # print(repr(hum_obj.pins))
