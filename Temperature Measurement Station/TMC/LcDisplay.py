@@ -124,7 +124,7 @@ class lcd:
         self.lcd_write(LCD_CLEARDISPLAY)
         self.lcd_write(LCD_RETURNHOME)
       
-    def print_stings(self, string1, string2):
+    def print_strings(self, string1, string2):
         self.clear()
         self.lcd_display_string(str(string1), 1)
         self.lcd_display_string(str(string2), 2)

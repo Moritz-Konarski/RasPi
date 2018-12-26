@@ -6,35 +6,29 @@ Folder in file struture:
 """
 
 from pathlib import Path
+import datetime as dt
 
 info_path = Path("/home/pi/Desktop/Info")
 
 pin_file = info_path / "pin_numbers.txt"
-
 name_file = info_path / "name.txt"
-
 track_file = info_path / "track.txt"
 
-log_file = info_path / "log.txt"
-
-#TODO make this whole thing an array to make it shorter because it is literally five times the same code
-
-dht_signifier = "DHT22: "
-light_signifier = "Light: "
-name_signifier = "Name: "
-led_signifier = "LED: "
 title = "not_given"
+led_signifier = "LED: "
+dht_signifier = "DHT22: "
+name_signifier = "Name: "
+light_signifier = "Light: "
 
 class I_O:
-
-    # maybe initialze this with a real funtion
-    # to make it more modular
 
     def __init__(self):
         self.pin_file = pin_file
         self.name_file = name_file
         self.track_file = track_file
-        self.log_file = log_file
+
+    def __str__(self):
+        pass
 
     def dht_pin_read(self):        
         with self.pin_file.open() as file:
@@ -75,12 +69,14 @@ class I_O:
                     break
     
     def name_txt_read(self):        
-        with open(self.name_file, "r") as file:
+        with self.name_file.open() as file:
             while (True):
                 read = file.readline()
                 if read.startswith(name_signifier):
                     read = read.replace(name_signifier, "")
                     self.title = read
+                    log_file_name = "{}_log.txt".format(self.title)
+                    self.log_file = info_path / log_file_name
                     return read
                 elif read is "":
                     print ("There is no name here.")
@@ -92,13 +88,33 @@ class I_O:
     def track_txt_read(self):
         pass
 
-    # def log_txt_write(self, temp_hum_values=[][], light_values=[][]):
-    #     pass
-        # date_string = ""
-        # temp_string = temp_string.append("{};".format(temp_hum_values[0][n]))
-        # hum_string = ""
-        # light_string = ""
+    def log_txt_prime(self, dht_names=[[]], light_names=[]):
+        string = []
+        string.append("{:17}".format("Time"))
+        for name in dht_names:
+            string.append("{:5}".format(name[0]))
+        for name in dht_names:
+            string.append("{:5}".format(name[1]))
+        for name in light_names:
+            string.append("{:6}".format(name))
+        string.append("\n")
+        self.title_string = ', '.join(string)
+        # print(self.title_string)
+        with self.log_file.open("a") as file:
+            file.write(self.title_string.decode('utf-8'))
 
-        # total_string = (date_string + temp_string + hum_string + light_string + "\n")
-        # with open(log_file, "a") as file:
-        #     file.write(total_string)
+    def log_txt_write(self, temp_hum_values=[[]], light_values=[]):
+        string = []
+        dateTime = dt.datetime.now().strftime("%x") + " " + dt.datetime.now().strftime("%X")
+        string.append(dateTime)
+        for value in temp_hum_values:
+            string.append("{:5.1f}".format(value[0]))
+        for value in temp_hum_values:
+            string.append("{:05.3f}".format(value[1] / 100))
+        for value in light_values:
+            string.append("{:6}".format(value))
+        string.append("\n")
+        self.log_string = ', '.join(string)
+        # print(self.log_string)
+        with self.log_file.open("a") as file:
+            file.write(self.log_string.decode('utf-8'))

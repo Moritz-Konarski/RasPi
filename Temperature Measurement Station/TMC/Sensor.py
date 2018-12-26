@@ -21,8 +21,8 @@ def dht_measure(pin):
     return temperature, humidity
 
 def dht_name(n):
-    temp_name = "Temp {}".format(n + 1)
-    hum_name = "Hum {}".format(n + 1)
+    temp_name = "Temp{}".format(n + 1)
+    hum_name = "Hum{}".format(n + 1)
     return temp_name, hum_name
 
 class Dht_22:
@@ -38,7 +38,7 @@ class Light:
 
     def __init__(self, pins=[]):
         self.pins = pins
-        self.names = ["Light {}".format(n + 1) for n in range(len(pins))]
+        self.names = ["Light{}".format(n + 1) for n in range(len(pins))]
     
     def measure(self):
         self.values = [light_measure(pin) for pin in self.pins]
