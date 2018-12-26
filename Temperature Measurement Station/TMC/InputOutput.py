@@ -1,3 +1,10 @@
+"""
+Desktop on Pi:
+/home/pi/Desktop
+Folder in file struture:
+/home/pi/<folder name>
+"""
+
 from pathlib import Path
 
 test_folder = Path("C:/Users/morit/Desktop/test_folder")
