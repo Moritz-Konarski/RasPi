@@ -1,23 +1,8 @@
-"""
-Relevant funtions:
-
-dht = Dht_22(pins)
-dht.measure()
-
-light = Light(pins)
-light.measure()
-
-relevant values:
-
-dht.temp_hum_values
-dht.temp_hum_names
-
-light.names
-light.values
-"""
+import sys, Adafruit_DHT
 from time import sleep
 import RPi.GPIO as GPIO
-import Adafruit_DHT
+
+GPIO.setmode(GPIO.BCM)
 
 def light_measure(pin):
         value = 0
@@ -31,6 +16,8 @@ def light_measure(pin):
 
 def dht_measure(pin):
     humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
+    humidity = round(humidity * 100) / 100
+    temperature = round(temperature * 100) / 100
     return temperature, humidity
 
 def dht_name(n):
@@ -55,3 +42,4 @@ class Light:
     
     def measure(self):
         self.values = [light_measure(pin) for pin in self.pins]
+

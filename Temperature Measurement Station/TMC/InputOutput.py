@@ -25,7 +25,7 @@ name_signifier = "Name: "
 led_signifier = "LED: "
 title = "not_given"
 
-class InputOutput:
+class I_O:
 
     # maybe initialze this with a real funtion
     # to make it more modular
@@ -37,7 +37,7 @@ class InputOutput:
         self.log_file = log_file
 
     def dht_pin_read(self):        
-        with open(self.pin_file, "r") as file:
+        with self.pin_file.open() as file:
             while (True):
                 read = file.readline()
                 if read.startswith(dht_signifier):
@@ -50,7 +50,7 @@ class InputOutput:
                     break
 
     def light_pin_read(self):        
-        with open(self.pin_file, "r") as file:
+        with self.pin_file.open() as file:
             while (True):
                 read = file.readline()
                 if read.startswith(light_signifier):
@@ -60,6 +60,18 @@ class InputOutput:
                     return light_pins
                 elif read is "":
                     print ("There are no Light pins.")
+                    break
+
+    def led_pin_read(self):        
+        with self.pin_file.open() as file:
+            while (True):
+                read = file.readline()
+                if read.startswith(led_signifier):
+                    read = read.replace(led_signifier, "")
+                    led_pin = int(read)
+                    return led_pin
+                elif read is "":
+                    print ("There is no led pin here.")
                     break
     
     def name_txt_read(self):        
@@ -72,18 +84,6 @@ class InputOutput:
                     return read
                 elif read is "":
                     print ("There is no name here.")
-                    break
-
-    def led_pin_read(self):        
-        with open(self.name_file, "r") as file:
-            while (True):
-                read = file.readline()
-                if read.startswith(led_signifier):
-                    read = read.replace(led_signifier, "")
-                    led_pin = int(read)
-                    return led_pin
-                elif read is "":
-                    print ("There is no led pin here.")
                     break
 
     def track_txt_write(self, iteration):
