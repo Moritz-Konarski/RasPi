@@ -88,6 +88,9 @@ class I_O:
     def track_txt_read(self):
         pass
 
+
+    #TODO remove the formatting for the final version because it just uses up space that is not needed
+
     def log_txt_prime(self, dht_names=[[]], light_names=[]):
         string = []
         string.append("{:17}".format("Time"))
@@ -99,7 +102,7 @@ class I_O:
             string.append("{:6}".format(name))
         string.append("\n")
         self.title_string = ', '.join(string)
-        # print(self.title_string)
+        print(self.title_string)
         with self.log_file.open("a") as file:
             file.write(self.title_string.decode('utf-8'))
 
@@ -115,6 +118,6 @@ class I_O:
             string.append("{:6}".format(value))
         string.append("\n")
         self.log_string = ', '.join(string)
-        # print(self.log_string)
+        print(self.log_string)
         with self.log_file.open("a") as file:
             file.write(self.log_string.decode('utf-8'))

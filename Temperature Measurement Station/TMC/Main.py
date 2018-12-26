@@ -33,35 +33,15 @@ i_o.log_txt_prime(dht_obj.temp_hum_names, light_obj.names)
 sleep(4)
 # led_obj.blink(2)
 for i in range(132):
-    # num = "------{:04}------".format(i)
-    # print(num)   
-    # lcd.print_strings(num,"")
-    # sleep(4)
-    # led_obj.blink(3)
-
-    # measuring temp and hum and printing results
-    dht_obj.measure()
-    # print(repr(dht_obj.pins))
-    # print(repr(dht_obj.temp_hum_names))
-    # print(repr(dht_obj.temp_hum_values))
-
-    # lcd.print_strings(dht_obj.temp_hum_names, str(dht_obj.temp_hum_values))
-    # sleep(4)
     
-    # led_obj.blink(3)
-
-    # measuring light
+    dht_obj.measure()
+    
     light_obj.measure()
-    # print(repr(light_obj.pins))
-    # print(repr(light_obj.names))
-    # print(repr(light_obj.values))
-
-
+    
     i_o.log_txt_write(dht_obj.temp_hum_values, light_obj.values)
-    # blinking ten times
+    
     sleep(300)
-    # led_obj.blink(blinks)
-
+    
 # lcd.backlight('Off')
 # lcd.clear()
 # finally
