@@ -76,8 +76,6 @@ class I_O:
                     self.log_dir = user_path / log_dir_name
                     log_file_name = "{}_{:03}_log.txt".format(self.title, self.iteration)
                     self.log_file = self.log_dir / log_file_name
-                    print(str(self.log_dir.exists()))
-                    print(str(self.log_dir.is_dir()))
                     if self.log_dir.exists() is False:
                         self.log_dir.mkdir()                
                     break

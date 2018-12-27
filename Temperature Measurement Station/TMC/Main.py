@@ -6,7 +6,7 @@ from time import sleep
 from LED import LED
 
 # interval in minutes
-INTERVAL = .5
+INTERVAL = 4
 ITERATIONS_PER_DAY = int(24 * 60 / INTERVAL)     # for 6 its 240
 BLINKS_OF_LED = 30 * INTERVAL
 SECONDS = BLINKS_OF_LED * 2
@@ -25,10 +25,10 @@ i_o.log_txt_prime(dht_obj.temp_hum_names, light_obj.names)
 sleep(4)
 
 while True:
-    
+
     i_o.track_txt_read()
 
-    for i in range(1, 4): # ITERATIONS_PER_DAY):
+    for i in range(1, ITERATIONS_PER_DAY):
         
         dht_obj.measure()
         
