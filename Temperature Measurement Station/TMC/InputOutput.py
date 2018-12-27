@@ -4,31 +4,28 @@ Desktop on Pi:
 Folder in file struture:
 /home/pi/<folder name>
 """
-
+import os
 from pathlib import Path
 import datetime as dt
 
-info_path = Path("/home/pi/Desktop/Info")
+info_path = Path("/home/pi/Desktop/Program/Info")
+user_path = Path("/home/pi/Desktop/User")
 
 pin_file = info_path / "pin_numbers.txt"
-name_file = info_path / "name.txt"
-track_file = info_path / "track.txt"
+name_file = user_path / "name.txt"
 
-title = "not_given"
 led_signifier = "LED: "
 dht_signifier = "DHT22: "
 name_signifier = "Name: "
 light_signifier = "Light: "
+track_signifier = "Iteration: "
 
 class I_O:
 
     def __init__(self):
         self.pin_file = pin_file
         self.name_file = name_file
-        self.track_file = track_file
-
-    def __str__(self):
-        pass
+        self.iteration = 0
 
     def dht_pin_read(self):        
         with self.pin_file.open() as file:
@@ -75,31 +72,53 @@ class I_O:
                 if read.startswith(name_signifier):
                     read = read.replace(name_signifier, "")
                     self.title = read
-                    log_file_name = "{}_log.txt".format(self.title)
-                    self.log_file = info_path / log_file_name
-                    return read
+                    log_dir_name = "{} Logs".format(self.title)
+                    self.log_dir = user_path / log_dir_name
+                    log_file_name = "{}_{:03}_log.txt".format(self.title, self.iteration)
+                    self.log_file = self.log_dir / log_file_name
+                    print(str(self.log_dir.exists()))
+                    print(str(self.log_dir.is_dir()))
+                    if self.log_dir.exists() is False:
+                        self.log_dir.mkdir()                
+                    break
                 elif read is "":
                     print ("There is no name here.")
                     break
-
-    def track_txt_write(self, iteration):
-        pass
-
+    
     def track_txt_read(self):
-        pass
+        with self.track_file.open("r") as file:
+            while (True):
+                read = file.readline()
+                if read.startswith(track_signifier):
+                    read = read.replace(track_signifier, "")
+                    iteration = int(read)
+                    self.iteration = iteration + 1
+                    break
+                elif read is "":
+                    print ("There is no track number here here.")
+                    break
+        log_file_name = "{}_{:03}_log.txt".format(self.title, self.iteration)
+        self.log_file = self.log_dir / log_file_name
+        track_file_content = "{}{}".format(track_signifier, self.iteration)
+        with self.track_file.open("w") as file:
+            file.write(track_file_content.decode('utf-8'))
 
-
-    #TODO remove the formatting for the final version because it just uses up space that is not needed
+    def track_txt_prime(self):
+        track_file_name = "{}_track.txt".format(self.title)
+        self.track_file = info_path / track_file_name
+        track_file_content = "{}{}".format(track_signifier, "0")
+        with self.track_file.open("w") as file:
+            file.write(track_file_content.decode('utf-8'))
 
     def log_txt_prime(self, dht_names=[[]], light_names=[]):
         string = []
-        string.append("{:17}".format("Time"))
+        string.append("{}".format("Time"))
         for name in dht_names:
-            string.append("{:5}".format(name[0]))
+            string.append("{}".format(name[0]))
         for name in dht_names:
-            string.append("{:5}".format(name[1]))
+            string.append("{}".format(name[1]))
         for name in light_names:
-            string.append("{:6}".format(name))
+            string.append("{}".format(name))
         string.append("\n")
         self.title_string = ', '.join(string)
         print(self.title_string)
@@ -111,11 +130,11 @@ class I_O:
         dateTime = dt.datetime.now().strftime("%x") + " " + dt.datetime.now().strftime("%X")
         string.append(dateTime)
         for value in temp_hum_values:
-            string.append("{:5.1f}".format(value[0]))
+            string.append("{}".format(value[0]))
         for value in temp_hum_values:
-            string.append("{:05.3f}".format(value[1] / 100))
+            string.append("{}".format(value[1] / 100))
         for value in light_values:
-            string.append("{:6}".format(value))
+            string.append("{}".format(value))
         string.append("\n")
         self.log_string = ', '.join(string)
         print(self.log_string)
