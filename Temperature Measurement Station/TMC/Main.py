@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import LcDisplay
 import RPi.GPIO as GPIO
 from Sensor import Dht_22, Light, TempOut
@@ -5,11 +6,10 @@ from InputOutput import I_O
 from time import sleep
 from LED import LED
 
-# interval in minutes
-INTERVAL = 4
-ITERATIONS_PER_DAY = int(24 * 60 / INTERVAL)     # for 6 its 240
-BLINKS_OF_LED = 30 * INTERVAL
-SECONDS = BLINKS_OF_LED * 2
+INTERVAL = 4                                        # interval in minutes
+ITERATIONS_PER_DAY = int(24 * 60 / INTERVAL)        # for 6 its 240
+BLINKS_OF_LED = 30 * INTERVAL                       # number of LED blinks to fill the interval
+SECONDS = BLINKS_OF_LED * 2                         # seconds that the interval is equal to
 
 i_o = I_O()
 # lcd = LcDisplay.lcd()

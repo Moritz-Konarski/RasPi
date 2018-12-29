@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import sys, Adafruit_DHT, re, os
 from time import sleep
 import RPi.GPIO as GPIO

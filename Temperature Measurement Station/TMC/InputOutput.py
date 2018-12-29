@@ -14,6 +14,7 @@ user_path = Path("/home/pi/Desktop/User")
 pin_file = info_path / "pin_numbers.txt"
 name_file = user_path / "name.txt"
 
+#!/usr/bin/python
 led_signifier = "LED: "
 dht_signifier = "DHT22: "
 name_signifier = "Name: "
