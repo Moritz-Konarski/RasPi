@@ -1,8 +1,30 @@
-import sys, Adafruit_DHT
+import sys, Adafruit_DHT, re, os
 from time import sleep
 import RPi.GPIO as GPIO
 
 GPIO.setmode(GPIO.BCM)
+
+def temp_out_measure(address):
+
+    os.system("modprobe w1-gpio")
+    os.system("modprobe w1-therm")
+
+    path = "/sys/bus/w1/devices/" + address + "/w1_slave"
+
+    with open(path, "r") as file:
+        read = file.readlines()
+
+    while "NO\n" in read[0]:
+        sleep(.25)
+        with open(path, "r") as file:
+            read = file.readlines()
+
+    for read_line in read:
+        if "t=" in read_line:
+            nums = [float(s) for s in re.findall(r'-?\d+\.?\d*', read_line)]
+            temp = round(nums[-1] / 100) / 10
+
+    return temp
 
 def light_measure(pin):
         value = 0
@@ -20,26 +42,35 @@ def dht_measure(pin):
     temperature = round(temperature * 100) / 100
     return temperature, humidity
 
-def dht_name(n):
-    temp_name = "Temp{}".format(n + 1)
-    hum_name = "Hum{}".format(n + 1)
+def dht_name(n=int):
+    temp_name = "Temp_{}".format(n)
+    hum_name = "Hum_{}".format(n)
     return temp_name, hum_name
 
 class Dht_22:
 
     def __init__(self, pins=[]):
         self.pins = pins
-        self.temp_hum_names = [dht_name(n) for n in range(len(pins))]
+        self.temp_hum_names = [dht_name(n) for n, m in enumerate(pins)]
     
     def measure(self):
         self.temp_hum_values = [dht_measure(pin) for pin in self.pins]
+
+class TempOut:
+
+    def __init__(self, addresses=[]):
+        self.addresses = addresses
+        self.names = ["TempOut_{}".format(n) for n, m in enumerate(addresses)]
+
+    def measure(self):
+        self.values = [temp_out_measure(address) for address in self.addresses]
 
 class Light: 
 
     def __init__(self, pins=[]):
         self.pins = pins
-        self.names = ["Light{}".format(n + 1) for n in range(len(pins))]
-    
+        self.names = ["Light_{}".format(n) for n, m in enumerate(pins)]
+
     def measure(self):
         self.values = [light_measure(pin) for pin in self.pins]
 

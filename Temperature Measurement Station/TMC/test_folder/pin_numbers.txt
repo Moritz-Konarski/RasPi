@@ -4,3 +4,5 @@ DHT22: 18
 Light: 23
 # the following pin is the one for the led that blinks
 LED: 24
+# the following pin is the one for the outside temp sensor
+DS18: 28-021318edc3aa
