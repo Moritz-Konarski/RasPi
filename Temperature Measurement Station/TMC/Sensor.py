@@ -3,12 +3,22 @@ import sys, Adafruit_DHT, re, os
 from time import sleep
 import RPi.GPIO as GPIO
 
+light_limit = 200000
+
 GPIO.setmode(GPIO.BCM)
 
-def temp_out_measure(address):
+def dht_measure(pin):
+    humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
+    humidity = round(humidity * 100) / 100
+    temperature = round(temperature * 100) / 100
+    return temperature, humidity
 
-    os.system("modprobe w1-gpio")
-    os.system("modprobe w1-therm")
+def dht_name(n=int):
+    temp_name = "Temp_{}".format(n)
+    hum_name = "Hum_{}".format(n)
+    return temp_name, hum_name
+
+def temp_out_measure(address):
 
     path = "/sys/bus/w1/devices/" + address + "/w1_slave"
 
@@ -33,20 +43,9 @@ def light_measure(pin):
         GPIO.output(pin, GPIO.LOW)
         sleep(0.1)
         GPIO.setup(pin, GPIO.IN)
-        while (GPIO.input(pin) == GPIO.LOW and value < 100000):
+        while (GPIO.input(pin) == GPIO.LOW and value < light_limit):
             value += 1
         return value
-
-def dht_measure(pin):
-    humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
-    humidity = round(humidity * 100) / 100
-    temperature = round(temperature * 100) / 100
-    return temperature, humidity
-
-def dht_name(n=int):
-    temp_name = "Temp_{}".format(n)
-    hum_name = "Hum_{}".format(n)
-    return temp_name, hum_name
 
 class Dht_22:
 
@@ -62,6 +61,8 @@ class TempOut:
     def __init__(self, addresses=[]):
         self.addresses = addresses
         self.names = ["TempOut_{}".format(n) for n, m in enumerate(addresses)]
+        os.system("modprobe w1-gpio")
+        os.system("modprobe w1-therm")
 
     def measure(self):
         self.values = [temp_out_measure(address) for address in self.addresses]
@@ -74,4 +75,3 @@ class Light:
 
     def measure(self):
         self.values = [light_measure(pin) for pin in self.pins]
-

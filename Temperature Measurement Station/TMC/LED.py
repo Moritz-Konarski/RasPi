@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from time import sleep
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BCM)
@@ -16,3 +17,9 @@ class LED:
             sleep(interval)
             GPIO.output(self.pin, 0)  # off
             sleep(interval)
+
+    def on(self):
+        GPIO.output(self.pin, 1)  # on
+
+    def off(self):
+        GPIO.output(self.pin, 0)  # on

@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Desktop on Pi:
 /home/pi/Desktop
@@ -9,12 +10,12 @@ from pathlib import Path
 import datetime as dt
 
 info_path = Path("/home/pi/Desktop/Program/Info")
+track_path = Path("/home/pi/Desktop/Program/Info/Tracks")
 user_path = Path("/home/pi/Desktop/User")
 
 pin_file = info_path / "pin_numbers.txt"
 name_file = user_path / "name.txt"
 
-#!/usr/bin/python
 led_signifier = "LED: "
 dht_signifier = "DHT22: "
 name_signifier = "Name: "
@@ -28,75 +29,94 @@ class I_O:
         self.pin_file = pin_file
         self.name_file = name_file
         self.iteration = 0
+        self.title = ""
 
     def dht_pin_read(self):        
-        with self.pin_file.open() as file:
-            while (True):
-                read = file.readline()
-                if read.startswith(dht_signifier):
-                    read = read.replace(dht_signifier, "")
-                    read = read.split(" ")
-                    dht_pins = [int(number) for number in read]
-                    return dht_pins
-                elif read is "":
-                    print ("There are no DHT22 pins.")
-                    break
+        try:
+            with self.pin_file.open() as file:
+                self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
+            with self.pin_file.open() as file:
+                for n in range(self.pin_txt_num_lines):
+                    read = file.readline()
+                    if read.startswith(dht_signifier):
+                        read = read.replace(dht_signifier, "")
+                        read = read.split(" ")
+                        dht_pins = [int(number) for number in read]
+                        return dht_pins
+        except IOError:
+            raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
 
     def light_pin_read(self):        
-        with self.pin_file.open() as file:
-            while (True):
-                read = file.readline()
-                if read.startswith(light_signifier):
-                    read = read.replace(light_signifier, "")
-                    read = read.split(" ")
-                    light_pins = [int(number) for number in read]
-                    return light_pins
-                elif read is "":
-                    print ("There are no Light pins.")
-                    break
+        try:
+            with self.pin_file.open() as file:
+                self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
+            with self.pin_file.open() as file:
+                for n in range(self.pin_txt_num_lines):
+                    read = file.readline()
+                    if read.startswith(light_signifier):
+                        read = read.replace(light_signifier, "")
+                        read = read.split(" ")
+                        light_pins = [int(number) for number in read]
+                        return light_pins
+        except IOError:
+            raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
 
     def led_pin_read(self):        
-        with self.pin_file.open() as file:
-            while (True):
-                read = file.readline()
-                if read.startswith(led_signifier):
-                    read = read.replace(led_signifier, "")
-                    led_pin = int(read)
-                    return led_pin
-                elif read is "":
-                    print ("There is no led pin here.")
-                    break
+        try:
+            with self.pin_file.open() as file:
+                self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
+            with self.pin_file.open() as file:
+                for n in range(self.pin_txt_num_lines):
+                    read = file.readline()
+                    if read.startswith(led_signifier):
+                        read = read.replace(led_signifier, "")
+                        led_pin = int(read)
+                        return led_pin
+        except IOError:
+            raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
     
-    def temp_out_address_read(self):        
-        with self.pin_file.open() as file:
-            while (True):
-                read = file.readline()
-                if read.startswith(temp_out_signifier):
-                    read = read.replace(temp_out_signifier, "")
-                    addresses = read.split(" ")
-                    return addresses
-                elif read is "":
-                    print ("There are no addresses here.")
-                    break
+    def temp_out_address_read(self):
+        try:
+            with self.pin_file.open() as file:
+                self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
+            with self.pin_file.open() as file:
+                for n in range(self.pin_txt_num_lines):
+                    read = file.readline()
+                    if read.startswith(temp_out_signifier):
+                        read = read.replace(temp_out_signifier, "")
+                        addresses = read.split(" ")
+                        return addresses
+        except IOError:
+            raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
     
-    def name_txt_read(self):        
-        with self.name_file.open() as file:
-            while (True):
-                read = file.readline()
-                if read.startswith(name_signifier):
-                    read = read.replace(name_signifier, "")
-                    self.title = read
-                    log_dir_name = "{} Logs".format(self.title)
-                    self.log_dir = user_path / log_dir_name
-                    log_file_name = "{}_{:03}_log.txt".format(self.title, self.iteration)
-                    self.log_file = self.log_dir / log_file_name
-                    if self.log_dir.exists() is False:
-                        self.log_dir.mkdir()                
-                    break
-                elif read is "":
-                    print ("There is no name here.")
-                    break
+    def name_txt_read(self):     
+        try:   
+            with self.name_file.open() as file:
+                self.name_txt_num_lines = sum(1 for line in self.name_file.open())
+            with self.name_file.open() as file:
+                for n in range(self.name_txt_num_lines):
+                    read = file.readline()
+                    if read.startswith(name_signifier):
+                        read = read.replace(name_signifier, "")
+                        self.title = read
+                        log_dir_name = "{} Logs".format(self.title)
+                        self.log_dir = user_path / log_dir_name
+                        log_file_name = "{}_{:03}_log.txt".format(self.title, self.iteration)
+                        self.log_file = self.log_dir / log_file_name
+                        if self.log_dir.exists() is False:
+                            self.log_dir.mkdir()                
+                        break
+        except IOError:
+            raise IOError("name.txt not found! Folder: /home/pi/Desktop/User")
     
+    def track_txt_prime(self):
+        track_file_name = "{}_track.txt".format(self.title)
+        self.track_file = track_path / track_file_name
+        if not self.track_file.exists():
+            track_file_content = "{}{}".format(track_signifier, "0")
+            with self.track_file.open("w") as file:
+                file.write(track_file_content.decode('utf-8'))
+
     def track_txt_read(self):
         with self.track_file.open("r") as file:
             while (True):
@@ -114,14 +134,6 @@ class I_O:
         track_file_content = "{}{}".format(track_signifier, self.iteration)
         with self.track_file.open("w") as file:
             file.write(track_file_content.decode('utf-8'))
-
-    def track_txt_prime(self):
-        track_file_name = "{}_track.txt".format(self.title)
-        self.track_file = info_path / track_file_name
-        if not self.track_file.exists():
-            track_file_content = "{}{}".format(track_signifier, "0")
-            with self.track_file.open("w") as file:
-                file.write(track_file_content.decode('utf-8'))
 
     def log_txt_prime(self, dht_names=[[]], temp_out_names=[], light_names=[]):
         string = []
@@ -146,14 +158,14 @@ class I_O:
         string = []
         dateTime = dt.datetime.now().strftime("%x") + " " + dt.datetime.now().strftime("%X")
         string.append(dateTime)
-        for name in temp_hum_values:
-            string.append("{}".format(name[0]))
-        for name in temp_hum_values:
-            string.append("{}".format(name[1]))
-        for name in temp_out_values:
-            string.append("{}".format(name))
-        for name in light_values:
-            string.append("{}".format(name))   
+        for value in temp_hum_values:
+            string.append("{}".format(value[0]))
+        for value in temp_hum_values:
+            string.append("{}".format(value[1] / 100))
+        for value in temp_out_values:
+            string.append("{}".format(value))
+        for value in light_values:
+            string.append("{}".format(value))   
         self.log_string = ', '.join(string) + "\n"
         print(self.log_string)
         with self.log_file.open("a") as file:
