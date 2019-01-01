@@ -26,7 +26,7 @@ class InputOutput:
         self.title = ""
 
     @property
-    def dht_pins(self):        
+    def dht_pins(self):
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -42,7 +42,7 @@ class InputOutput:
             raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
 
     @property
-    def light_pins(self):        
+    def light_pins(self):
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -58,7 +58,7 @@ class InputOutput:
             raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
 
     @property
-    def led_pins(self):        
+    def led_pins(self):
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -87,7 +87,7 @@ class InputOutput:
         except IOError:
             raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
     
-    def title_read(self):     
+    def title_read(self):
         try:   
             with self.title_file.open() as file:
                 self.title_file_num_lines = sum(1 for line in self.title_file.open())

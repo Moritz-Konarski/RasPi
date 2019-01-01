@@ -26,7 +26,7 @@ try:
     out_temp_sensor = OutdoorTemp(input_output.out_temp_addr)
 
     led_indicator = LEDIndicator(input_output.led_pins)
-#------------------------------------------------------------------------------------------
+
     input_output.title_read()
 
     input_output.track_init()

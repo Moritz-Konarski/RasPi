@@ -3,14 +3,21 @@ import sys, Adafruit_DHT, re, os
 from time import sleep
 import RPi.GPIO as GPIO
 
+REPETITIONS = 2
+INTERVAL = 3
 light_limit = 200000
 
 GPIO.setmode(GPIO.BCM)
 
-def dht_measure(pin):
-    humidity, temperature = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
-    humidity = round(humidity * 100) / 100
-    temperature = round(temperature * 100) / 100
+def dht_measure(pin, reps=1):
+    humidity, temperature = 0, 0
+    for n in range(reps):
+        hum_read, temp_read = Adafruit_DHT.read_retry(Adafruit_DHT.DHT22, pin)
+        humidity += hum_read
+        temperature += temp_read
+        sleep(INTERVAL)
+    humidity = round(humidity * 100) / (100 * reps)
+    temperature = round(temperature * 100) / (100 * reps)
     return temperature, humidity
 
 def dht_name(n=int):
@@ -18,23 +25,23 @@ def dht_name(n=int):
     hum_name = "Hum_{}".format(n)
     return temp_name, hum_name
 
-def out_temp_measure(address):
-
+def out_temp_measure(address, reps=1):
+    temp = 0
     path = "/sys/bus/w1/devices/" + address + "/w1_slave"
-
-    with open(path, "r") as file:
-        read = file.readlines()
-
-    while "NO\n" in read[0]:
-        sleep(.25)
+    for n in range(reps):
         with open(path, "r") as file:
             read = file.readlines()
 
-    for read_line in read:
-        if "t=" in read_line:
-            nums = [float(s) for s in re.findall(r'-?\d+\.?\d*', read_line)]
-            temp = round(nums[-1] / 100) / 10
+        while "NO\n" in read[0]:
+            sleep(.25)
+            with open(path, "r") as file:
+                read = file.readlines()
 
+        for read_line in read:
+            if "t=" in read_line:
+                nums = [float(s) for s in re.findall(r'-?\d+\.?\d*', read_line)]
+                temp += nums[-1]
+    temp = round(temp / 100) / (10 * reps)
     return temp
 
 def light_measure(pin):
@@ -54,7 +61,8 @@ class Dht22:
         self.names = [dht_name(n) for n, m in enumerate(pins)]
     
     def measure(self):
-        self.values = [dht_measure(pin) for pin in self.pins]
+        for n in range(REPETITIONS):
+            self.values = [dht_measure(pin, REPETITIONS) for pin in self.pins]
 
 class OutdoorTemp:
 
@@ -65,7 +73,8 @@ class OutdoorTemp:
         os.system("modprobe w1-therm")
 
     def measure(self):
-        self.values = [out_temp_measure(address) for address in self.addresses]
+        for n in range(REPETITIONS):
+            self.values = [out_temp_measure(address, REPETITIONS) for address in self.addresses]
 
 class Light: 
 
@@ -74,4 +83,5 @@ class Light:
         self.names = ["Light_{}".format(n) for n, m in enumerate(pins)]
 
     def measure(self):
-        self.values = [light_measure(pin) for pin in self.pins]
+        for n in range(REPETITIONS):
+            self.values = [light_measure(pin) for pin in self.pins]
