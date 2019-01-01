@@ -61,7 +61,7 @@ except KeyboardInterrupt:
 except IOError as error:
     print("--------------------SOMETHING WENT WRONG--------------------")
     print(error.args)
-    raise
+    # raise
 
 finally:
     # lcd.backlight('Off')
