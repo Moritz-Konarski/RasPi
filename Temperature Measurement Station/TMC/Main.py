@@ -1,69 +1,74 @@
 #!/usr/bin/python
-import LcDisplay
 import RPi.GPIO as GPIO
-from Sensor import Dht_22, Light, TempOut
-from InputOutput import I_O
+from LcDisplay import LCDisplay
+from Sensor import Dht22, Light, OutdoorTemp
+from InputOutput import InputOutput
 from time import sleep
-from LED import LED
+from LED import LEDIndicator
 
-INTERVAL = 2                                        # interval in minutes
-ITERATIONS_PER_DAY = int(24 * 60 / INTERVAL)        # iterations per day
-BLINKS_OF_LED = 30 * INTERVAL                       # number of LED blinks to fill the interval
-SECONDS = BLINKS_OF_LED * 2                         # seconds that the interval is equal to
+MEASURE_INTERVAL = 2                                        # interval in minutes
+PAUSE = 2                                                   # pause between individual measurements
+ITERATIONS_PER_DAY = int(24 * 60 / MEASURE_INTERVAL)        # iterations per day
+BLINKS_OF_LED = 30 * MEASURE_INTERVAL                       # number of LED blinks to fill the interval
+SECONDS = BLINKS_OF_LED * 2                                 # seconds that the interval is equal to
 
 try:
-    i_o = I_O()
-    # lcd = LcDisplay.lcd()
-    # lcd.backlight('on')
-    dht_obj = Dht_22(i_o.dht_pin_read())
-    # light_obj = Light(i_o.light_pin_read())
-    temp_out_obj = TempOut(i_o.temp_out_address_read())
-    led_obj = LED(i_o.led_pin_read())
+    input_output = InputOutput()
 
-    i_o.name_txt_read()
+    # lcd = LCDisplay()
 
-    i_o.track_txt_prime()
+    # lcd.backlight_on
 
-    i_o.log_txt_prime(dht_obj.temp_hum_names, temp_out_obj.names, [])
+    dht_sensor = Dht22(input_output.dht_sensor_pins)
 
-    led_obj.blink(3)
+    # light_obj = Light(input_output.light_sensor_pins)
+
+    outdoor_temp_sensor = OutdoorTemp(input_output.outdoor_temp_sensor_addresses)
+
+    led_indicator = LEDIndicator(input_output.led_indicator_pins)
+#------------------------------------------------------------------------------------------
+    input_output.title_read()
+
+    input_output.track_file_init()
+
+    input_output.log_file_init(dht_sensor.names, outdoor_temp_sensor.names, )
+
+    led_indicator.blink(PAUSE)
 
     while True:
 
-        i_o.track_txt_read()
+        input_output.track_file_read()
 
-        for i in range(1, ITERATIONS_PER_DAY):
+        for i in range(ITERATIONS_PER_DAY):
 
-            led_obj.on()
+            led_indicator.on
             
-            dht_obj.measure()
+            dht_sensor.measure()
             
-            led_obj.blink(2)
+            led_indicator.blink(PAUSE)
 
-            led_obj.on()
+            led_indicator.on
 
-            temp_out_obj.measure()
+            outdoor_temp_sensor.measure()
 
-            led_obj.blink(2)
+            led_indicator.blink(PAUSE)
 
             # light_obj.measure()
             
-            i_o.log_txt_write(dht_obj.temp_hum_values, temp_out_obj.values, [])
+            input_output.log_file_write(dht_sensor.values, outdoor_temp_sensor.values, )
             
-            led_obj.blink(BLINKS_OF_LED)
-
-            # sleep(30) # SECONDS)
+            led_indicator.blink(BLINKS_OF_LED)
 
 except KeyboardInterrupt:
     print("\nUser terminated program. Shutting down.")
-    led_obj.blink(1)
+    led_indicator.blink()
 
 except IOError as error:
     print("--------------------SOMETHING WENT WRONG--------------------")
     print(error.args)
-    # raise
+    led_indicator.blink()
 
 finally:
-    # lcd.backlight('Off')
+    # lcd.backlight_off
     # lcd.clear()
     GPIO.cleanup()

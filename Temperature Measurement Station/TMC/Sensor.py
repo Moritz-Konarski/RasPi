@@ -18,7 +18,7 @@ def dht_name(n=int):
     hum_name = "Hum_{}".format(n)
     return temp_name, hum_name
 
-def temp_out_measure(address):
+def outdoor_temp_measure(address):
 
     path = "/sys/bus/w1/devices/" + address + "/w1_slave"
 
@@ -47,25 +47,25 @@ def light_measure(pin):
             value += 1
         return value
 
-class Dht_22:
+class Dht22:
 
     def __init__(self, pins=[]):
         self.pins = pins
-        self.temp_hum_names = [dht_name(n) for n, m in enumerate(pins)]
+        self.names = [dht_name(n) for n, m in enumerate(pins)]
     
     def measure(self):
-        self.temp_hum_values = [dht_measure(pin) for pin in self.pins]
+        self.values = [dht_measure(pin) for pin in self.pins]
 
-class TempOut:
+class OutdoorTemp:
 
     def __init__(self, addresses=[]):
         self.addresses = addresses
-        self.names = ["TempOut_{}".format(n) for n, m in enumerate(addresses)]
+        self.names = ["OutdoorTemp_{}".format(n) for n, m in enumerate(addresses)]
         os.system("modprobe w1-gpio")
         os.system("modprobe w1-therm")
 
     def measure(self):
-        self.values = [temp_out_measure(address) for address in self.addresses]
+        self.values = [outdoor_temp_measure(address) for address in self.addresses]
 
 class Light: 
 

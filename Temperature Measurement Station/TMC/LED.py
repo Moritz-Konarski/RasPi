@@ -5,7 +5,7 @@ GPIO.setmode(GPIO.BCM)
 
 interval = 1
 
-class LED:
+class LEDIndicator:
 
     def __init__(self, pin):
         self.pin = pin
@@ -18,8 +18,10 @@ class LED:
             GPIO.output(self.pin, 0)  # off
             sleep(interval)
 
+    @property
     def on(self):
         GPIO.output(self.pin, 1)  # on
 
+    @property
     def off(self):
-        GPIO.output(self.pin, 0)  # on
+        GPIO.output(self.pin, 0)  # off
