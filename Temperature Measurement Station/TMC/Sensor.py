@@ -3,9 +3,9 @@ import sys, Adafruit_DHT, re, os
 from time import sleep
 import RPi.GPIO as GPIO
 
-REPETITIONS = 2
-INTERVAL = 3
-light_limit = 200000
+REPETITIONS = 2         # how many times the measurement is repeated
+INTERVAL = 3            # the pause between each iteration in seconds
+light_limit = 200000    # maximum values of the light-value-variable
 
 GPIO.setmode(GPIO.BCM)
 
@@ -16,8 +16,8 @@ def dht_measure(pin, reps=1):
         humidity += hum_read
         temperature += temp_read
         sleep(INTERVAL)
-    humidity = round(humidity * 100) / (100 * reps)
-    temperature = round(temperature * 100) / (100 * reps)
+    humidity = round(humidity * 100 / reps) / (100)
+    temperature = round(temperature * 100 / reps) / (100)
     return temperature, humidity
 
 def dht_name(n=int):
@@ -41,7 +41,8 @@ def out_temp_measure(address, reps=1):
             if "t=" in read_line:
                 nums = [float(s) for s in re.findall(r'-?\d+\.?\d*', read_line)]
                 temp += nums[-1]
-    temp = round(temp / 100) / (10 * reps)
+        sleep(INTERVAL)
+    temp = round(temp / (10  * reps)) / (100)
     return temp
 
 def light_measure(pin):

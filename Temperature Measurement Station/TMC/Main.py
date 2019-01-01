@@ -6,7 +6,7 @@ from InputOutput import InputOutput
 from time import sleep
 from LED import LEDIndicator
 
-MEASURE_INTERVAL = 2                                        # interval in minutes
+MEASURE_INTERVAL = 5                                        # interval in minutes
 PAUSE = 2                                                   # pause between individual measurements
 ITERATIONS_PER_DAY = int(24 * 60 / MEASURE_INTERVAL)        # iterations per day
 BLINKS_OF_LED = 30 * MEASURE_INTERVAL                       # number of LED blinks to fill the interval
