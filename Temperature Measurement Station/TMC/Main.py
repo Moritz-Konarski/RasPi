@@ -21,7 +21,7 @@ try:
 
     dht_sensor = Dht22(input_output.dht_pins)
 
-    # light_obj = Light(input_output.light_pins)
+    # light_sensor = Light(input_output.light_pins)
 
     out_temp_sensor = OutdoorTemp(input_output.out_temp_addr)
 
@@ -31,7 +31,7 @@ try:
 
     input_output.track_init()
 
-    input_output.log_init(dht_sensor.names, out_temp_sensor.names, )
+    input_output.log_init(dht_sensor.names, out_temp_sensor.names, )    # light_sensor.names
 
     led_indicator.blink(PAUSE)
 
@@ -53,9 +53,9 @@ try:
 
             led_indicator.blink(PAUSE)
 
-            # light_obj.measure()
+            # light_sensor.measure()
             
-            input_output.log_write(dht_sensor.values, out_temp_sensor.values, )
+            input_output.log_write(dht_sensor.values, out_temp_sensor.values, ) # light_sensor.values
             
             led_indicator.blink(BLINKS_OF_LED)
 
