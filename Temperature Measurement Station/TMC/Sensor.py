@@ -18,7 +18,7 @@ def dht_name(n=int):
     hum_name = "Hum_{}".format(n)
     return temp_name, hum_name
 
-def outdoor_temp_measure(address):
+def out_temp_measure(address):
 
     path = "/sys/bus/w1/devices/" + address + "/w1_slave"
 
@@ -65,7 +65,7 @@ class OutdoorTemp:
         os.system("modprobe w1-therm")
 
     def measure(self):
-        self.values = [outdoor_temp_measure(address) for address in self.addresses]
+        self.values = [out_temp_measure(address) for address in self.addresses]
 
 class Light: 
 

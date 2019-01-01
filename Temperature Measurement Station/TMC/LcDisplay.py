@@ -129,6 +129,7 @@ class LCDisplay:
             self.lcd_write(ord(char), Rs)
 
    # clear lcd and set to home
+    @property
     def clear(self):
         self.lcd_write(LCD_CLEARDISPLAY)
         self.lcd_write(LCD_RETURNHOME)

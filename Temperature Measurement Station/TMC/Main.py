@@ -19,25 +19,25 @@ try:
 
     # lcd.backlight_on
 
-    dht_sensor = Dht22(input_output.dht_sensor_pins)
+    dht_sensor = Dht22(input_output.dht_pins)
 
-    # light_obj = Light(input_output.light_sensor_pins)
+    # light_obj = Light(input_output.light_pins)
 
-    outdoor_temp_sensor = OutdoorTemp(input_output.outdoor_temp_sensor_addresses)
+    out_temp_sensor = OutdoorTemp(input_output.out_temp_addr)
 
-    led_indicator = LEDIndicator(input_output.led_indicator_pins)
+    led_indicator = LEDIndicator(input_output.led_pins)
 #------------------------------------------------------------------------------------------
     input_output.title_read()
 
-    input_output.track_file_init()
+    input_output.track_init()
 
-    input_output.log_file_init(dht_sensor.names, outdoor_temp_sensor.names, )
+    input_output.log_init(dht_sensor.names, out_temp_sensor.names, )
 
     led_indicator.blink(PAUSE)
 
     while True:
 
-        input_output.track_file_read()
+        input_output.track_read()
 
         for i in range(ITERATIONS_PER_DAY):
 
@@ -49,13 +49,13 @@ try:
 
             led_indicator.on
 
-            outdoor_temp_sensor.measure()
+            out_temp_sensor.measure()
 
             led_indicator.blink(PAUSE)
 
             # light_obj.measure()
             
-            input_output.log_file_write(dht_sensor.values, outdoor_temp_sensor.values, )
+            input_output.log_write(dht_sensor.values, out_temp_sensor.values, )
             
             led_indicator.blink(BLINKS_OF_LED)
 
@@ -70,5 +70,5 @@ except IOError as error:
 
 finally:
     # lcd.backlight_off
-    # lcd.clear()
+    # lcd.clear
     GPIO.cleanup()

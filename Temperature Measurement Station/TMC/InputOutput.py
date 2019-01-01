@@ -26,7 +26,7 @@ class InputOutput:
         self.title = ""
 
     @property
-    def dht_sensor_pins(self):        
+    def dht_pins(self):        
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -42,7 +42,7 @@ class InputOutput:
             raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
 
     @property
-    def light_sensor_pins(self):        
+    def light_pins(self):        
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -58,7 +58,7 @@ class InputOutput:
             raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
 
     @property
-    def led_indicator_pins(self):        
+    def led_pins(self):        
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -73,7 +73,7 @@ class InputOutput:
             raise IOError("pin_numbers.txt not found! Folder: /home/pi/Desktop/Program/Info")
     
     @property
-    def outdoor_temp_sensor_addresses(self):
+    def out_temp_addr(self):
         try:
             with self.pin_file.open() as file:
                 self.pin_txt_num_lines = sum(1 for line in self.pin_file.open())
@@ -107,7 +107,7 @@ class InputOutput:
         except IOError:
             raise IOError("name.txt not found! Folder: /home/pi/Desktop/User")
     
-    def track_file_init(self):
+    def track_init(self):
         track_file_name = "{}_track.txt".format(self.title)
         self.track_file = track_path / track_file_name
         if not self.track_file.exists():
@@ -115,7 +115,7 @@ class InputOutput:
             with self.track_file.open("w") as file:
                 file.write(track_file_content.decode('utf-8'))
 
-    def track_file_read(self):
+    def track_read(self):
         with self.track_file.open("r") as file:
             while (True):
                 read = file.readline()
@@ -133,7 +133,7 @@ class InputOutput:
         with self.track_file.open("w") as file:
             file.write(track_file_content.decode('utf-8'))
 
-    def log_file_init(self, dht_names=[[]], temp_out_names=[], light_names=[]):
+    def log_init(self, dht_names=[[]], temp_out_names=[], light_names=[]):
         string = []
         string.append("{}".format("Time"))
         for name in dht_names:
@@ -152,7 +152,7 @@ class InputOutput:
         else:
             print("Continuation...\n{}".format(self.title_string))
 
-    def log_file_write(self, dht_values=[[]], temp_out_values=[], light_values=[]):
+    def log_write(self, dht_values=[[]], temp_out_values=[], light_values=[]):
         string = []
         dateTime = dt.datetime.now().strftime("%x") + " " + dt.datetime.now().strftime("%X")
         string.append(dateTime)
