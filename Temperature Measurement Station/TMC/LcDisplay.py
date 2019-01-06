@@ -112,7 +112,7 @@ class LCDisplay:
 
     @property
     def backlight_off(self):
-        self.lcd_device.write_cmd(LCD_BACKLIGHT)
+        self.lcd_device.write_cmd(LCD_NOBACKLIGHT)
 
    # put string function
     def lcd_display_string(self, string, line):
@@ -135,6 +135,6 @@ class LCDisplay:
         self.lcd_write(LCD_RETURNHOME)
       
     def print_strings(self, string1, string2):
-        self.clear()
+        self.clear
         self.lcd_display_string(str(string1), 1)
         self.lcd_display_string(str(string2), 2)

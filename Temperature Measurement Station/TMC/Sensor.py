@@ -3,7 +3,7 @@ import sys, Adafruit_DHT, re, os
 from time import sleep
 import RPi.GPIO as GPIO
 
-REPETITIONS = 2         # how many times the measurement is repeated
+REPETITIONS = 1         # how many times the measurement is repeated
 INTERVAL = 3            # the pause between each iteration in seconds
 light_limit = 200000    # maximum values of the light-value-variable
 

@@ -6,7 +6,7 @@ from InputOutput import InputOutput
 from time import sleep
 from LED import LEDIndicator
 
-MEASURE_INTERVAL = 5                                        # interval in minutes
+MEASURE_INTERVAL = 1                                        # interval in minutes
 PAUSE = 2                                                   # pause between individual measurements
 ITERATIONS_PER_DAY = int(24 * 60 / MEASURE_INTERVAL)        # iterations per day
 BLINKS_OF_LED = 30 * MEASURE_INTERVAL                       # number of LED blinks to fill the interval
@@ -15,23 +15,31 @@ SECONDS = BLINKS_OF_LED * 2                                 # seconds that the i
 try:
     input_output = InputOutput()
 
-    # lcd = LCDisplay()
+    lcd = LCDisplay()
 
-    # lcd.backlight_on
+    lcd.backlight_on
+
+    led_indicator = LEDIndicator(input_output.led_pins)
+
+    lcd.print_strings("Booting Up", "One Moment")
+
+    led_indicator.blink(4)
 
     dht_sensor = Dht22(input_output.dht_pins)
 
-    # light_sensor = Light(input_output.light_pins)
+    light_sensor = Light(input_output.light_pins)
 
     out_temp_sensor = OutdoorTemp(input_output.out_temp_addr)
-
-    led_indicator = LEDIndicator(input_output.led_pins)
 
     input_output.title_read()
 
     input_output.track_init()
 
-    input_output.log_init(dht_sensor.names, out_temp_sensor.names, )    # light_sensor.names
+    lcd.print_strings("Title: {}".format(input_output.title), "Iteration: {}".format(input_output.iteration))
+
+    led_indicator.blink(4)
+
+    input_output.log_init(dht_sensor.names, out_temp_sensor.names, light_sensor.names)
 
     led_indicator.blink(PAUSE)
 
@@ -39,7 +47,9 @@ try:
 
         input_output.track_read()
 
-        for i in range(ITERATIONS_PER_DAY):
+        for i in range(4):#ITERATIONS_PER_DAY):
+
+            lcd.print_strings("Measuring", "Temp and Hum")
 
             led_indicator.on
             
@@ -47,15 +57,25 @@ try:
             
             led_indicator.blink(PAUSE)
 
+            lcd.print_strings("Measuring", "Outside Temp")
+
             led_indicator.on
 
             out_temp_sensor.measure()
 
             led_indicator.blink(PAUSE)
 
-            # light_sensor.measure()
+            lcd.print_strings("Measuring", "Light")
+
+            led_indicator.on
+
+            light_sensor.measure()
+
+            lcd.print_strings("Done", "Measuring")
             
-            input_output.log_write(dht_sensor.values, out_temp_sensor.values, ) # light_sensor.values
+            input_output.log_write(dht_sensor.values, out_temp_sensor.values, light_sensor.values) 
+
+            lcd.print_strings("Waiting for next", "Measurement")
             
             led_indicator.blink(BLINKS_OF_LED)
 
@@ -69,6 +89,6 @@ except IOError as error:
     led_indicator.blink()
 
 finally:
-    # lcd.backlight_off
-    # lcd.clear
+    lcd.backlight_off
+    lcd.clear
     GPIO.cleanup()
