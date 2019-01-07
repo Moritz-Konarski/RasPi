@@ -125,7 +125,7 @@ class InputOutput:
                     self.iteration = iteration + 1
                     break
                 elif read is "":
-                    print ("There is no track number here.")
+                    # print ("There is no track number here.")
                     break
         log_file_name = "{}_{:03}_log.txt".format(self.title, self.iteration)
         self.log_file = self.log_dir / log_file_name
@@ -146,11 +146,12 @@ class InputOutput:
             string.append("{}".format(name))   
         self.title_string = ', '.join(string) + "\n"
         if not self.log_file.exists():
-            print(self.title_string)
+            # print(self.title_string)
             with self.log_file.open("a") as file:
                 file.write(self.title_string.decode('utf-8'))
         else:
-            print("Continuation...\n{}".format(self.title_string))
+            pass
+            # print("Continuation...\n{}".format(self.title_string))
 
     def log_write(self, dht_values=[[]], temp_out_values=[], light_values=[]):
         string = []
@@ -165,6 +166,6 @@ class InputOutput:
         for value in light_values:
             string.append("{}".format(value))   
         self.log_string = ', '.join(string) + "\n"
-        print(self.log_string)
+        # print(self.log_string)
         with self.log_file.open("a") as file:
             file.write(self.log_string.decode('utf-8'))
