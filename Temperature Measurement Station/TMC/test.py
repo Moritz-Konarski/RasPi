@@ -48,7 +48,6 @@ try:
     # print (" Published CPU =",cpuPercent," RAM =", ramPercent," to host: " , mqttHost , " clientID= " , clientID)
 
 except (KeyboardInterrupt):
-    
     pass
     # break
 

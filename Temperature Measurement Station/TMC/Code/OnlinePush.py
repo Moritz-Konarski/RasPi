@@ -25,16 +25,18 @@ class OnlinePush:
     def __init__(self):
         pass
 
-    def push(self, dht_values=[], out_temp=[], light=[]):
+    def push(self, dht_values=[[]], out_temp=[], light=[]):
         clientID = ''
 
         for x in range(1,16):
             clientID+=random.choice(string.alphanum)
 
-        payload = "field1={}&field2={}&field3={}&field4={}".format(dht_values[0], dht_values[1], out_temp[0], light[0])
+        payload = "field1={}&field2={}&field3={}&field4={}".format(dht_values[0][0], dht_values[0][1], out_temp[0], light[0])
+        
 
         try:
-            publish.single(topic, payload, hostname=mqttHost, transport=tTransport, port=tPort,auth={'username':mqttUsername,'password':mqttAPIKey})
+            publish.single(topic, payload, hostname=mqttHost, transport=tTransport, port=tPort, auth={'username':mqttUsername,'password':mqttAPIKey})
+            print("pushing")
 
         except:
             print("There was an error while publishing the data.")
