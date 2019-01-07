@@ -6,6 +6,7 @@ from InputOutput import InputOutput
 from time import sleep
 from LED import LEDIndicator
 from subprocess import call
+from OnlinePush import OnlinePush
 
 MEASURE_INTERVAL = 1                                        # interval in minutes
 WRITE_INTERVAL = 10                                         # interval for writing to the file
@@ -31,6 +32,7 @@ try:
     input_output.track_init()
     input_output.log_init(dht_sensor.names, out_temp_sensor.names, light_sensor.names)
     led_indicator.blink(PAUSE)
+    uploader = OnlinePush()
 
     for n in range(UPTIME):
         # read the track file to get the number
@@ -57,6 +59,7 @@ try:
             led_indicator.blink(BLINKS_OF_LED)
             if i % WRITE_INTERVAL == 0:
                 input_output.log_write(dht_sensor.values, out_temp_sensor.values, light_sensor.values) 
+                uploader.push(dht_sensor.values[0], out_temp_sensor.values[0], light_sensor.values[0])
 
 except KeyboardInterrupt:
     print("\nUser terminated program. Shutting down.")
