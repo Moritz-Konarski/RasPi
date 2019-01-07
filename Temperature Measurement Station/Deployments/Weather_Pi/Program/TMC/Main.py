@@ -5,9 +5,11 @@ from Sensor import Dht22, Light, OutdoorTemp
 from InputOutput import InputOutput
 from time import sleep
 from LED import LEDIndicator
+from subprocess import call
 
 MEASURE_INTERVAL = 1                                        # interval in minutes
 WRITE_INTERVAL = 10                                         # interval for writing to the file
+UPTIME = 7                                                  # time in days that the pi is supposed to be up in one go
 PAUSE = 2                                                   # pause between individual measurements
 ITERATIONS_PER_DAY = int(24 * 60 / MEASURE_INTERVAL)        # iterations per day
 BLINKS_OF_LED = 30 * MEASURE_INTERVAL                       # number of LED blinks to fill the interval
@@ -30,12 +32,12 @@ try:
     input_output.log_init(dht_sensor.names, out_temp_sensor.names, light_sensor.names)
     led_indicator.blink(PAUSE)
 
-    while True:
+    for n in range(UPTIME):
         # read the track file to get the number
         input_output.track_read()
         lcd.print_strings("Name: {}".format(input_output.title), "Iteration: {}".format(input_output.iteration))
         led_indicator.blink(4)
-        
+
         for i in range(ITERATIONS_PER_DAY):
             # measure
             led_indicator.on            
@@ -69,3 +71,4 @@ finally:
     lcd.backlight_off
     lcd.clear
     GPIO.cleanup()
+    call("sudo reboot", shell=True)
