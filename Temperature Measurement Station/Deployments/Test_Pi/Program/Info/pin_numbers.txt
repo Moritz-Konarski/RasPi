@@ -1,6 +1,6 @@
-# the following are the pin numbers of the temp and hum sensors, in order of 1 to n
+# the following are the pin numbers of the temp and hum sensors, in order of 0 to n
 DHT22: 14
-# the following pin numbers are the light sensors, in order from 1 to n
+# the following pin numbers are the light sensors, in order from 0 to n
 # Light: 16
 # the following pin is the one for the led that blinks
 # LED: 12
